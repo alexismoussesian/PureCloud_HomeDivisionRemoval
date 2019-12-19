@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include>
+  <?define ProductName="PureCloud Home Division Removal" ?>
+  <?define Manufacturer="Genesys" ?>
+  <?define ProductCode="{4AF36591-FE27-44AF-95F9-C9B877DD6231}"?>
+  <?define ProductVersion="!(bind.FileVersion.PureCloud_HomeDivisionRemoval.exe)" ?>
+  <?define Comments="The tool for deleting home division for selected users" ?>
+  <?define UpgradeCode="{b70f780c-496c-443b-abaf-152db06a68a5}"?>
+  <?define SourceDir="..\PureCloud_HomeDivisionRemoval\bin\Debug"?>
+</Include>

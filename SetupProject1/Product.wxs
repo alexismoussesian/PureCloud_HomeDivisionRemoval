@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
+     xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension"
+     xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+  <?include Settings.wxi ?>
+  <Product Id="$(var.ProductCode)" Name="$(var.ProductName) $(var.ProductVersion)"
+          Language="1033" Version="$(var.ProductVersion)" Manufacturer="$(var.Manufacturer)"
+          UpgradeCode="$(var.UpgradeCode)">
+    <Package Id="*" InstallerVersion="301" Compressed="yes" InstallScope="perMachine" Comments="$(var.Comments)"
+             Description="$(var.ProductName) $(var.ProductVersion)" />
+
+    <?include Conditions.wxi ?>
+    
+    <UI>
+      <UIRef Id="WixUI_Mondo" />
+      <UIRef Id="WixUI_ErrorProgressText" />
+    </UI>
+
+    <WixVariable Id="WixUIBannerBmp" Value="banner.png" />
+    <WixVariable Id="WixUIDialogBmp" Value="dialog.png" />
+    <WixVariable Id="WixUILicenseRtf" Value="license.rtf" />
+    
+    <!--Add/Remove Programs Icon Image-->
+    <Icon Id="GLogo.ico" SourceFile="GLogo.ico"/>
+    <Property Id="ARPPRODUCTICON" Value="GLogo.ico" />
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR" />
+  
+    <Property Id="WIX_IS_NETFRAMEWORK_461_OR_LATER_INSTALLED" Value="28686B52-9255-41C7-8FF8-760B9597F248" />
+
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <MediaTemplate EmbedCab="yes" CompressionLevel="high" />
+		
+    <Feature Id="ProductFeature" Title="PureCloud_HomeDivisionRemoval" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+      <ComponentRef Id="ApplicationShortcut" /> 
+		</Feature>
+	</Product>
+  
+  <Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+        <Directory Id="CompanyName" Name="Genesys" >
+          <Directory Id="INSTALLDIR" Name="PureCloud_HomeDivisionRemoval" />
+        </Directory>
+			</Directory>
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ApplicationProgramsFolder" Name="$(var.ProductName)" />
+      </Directory>
+		</Directory>
+  </Fragment>
+
+  <Fragment>
+    <DirectoryRef Id="ApplicationProgramsFolder">
+        <Component Id="ApplicationShortcut" Guid="B135596E-5366-4AD8-A934-FC819E34DF9D">
+            <Shortcut Id="ApplicationStartMenuShortcut" 
+                Name="$(var.ProductName)" 
+                Description="$(var.ProductName)"
+                Target="[INSTALLDIR]PureCloud_HomeDivisionRemoval.exe"
+                Icon="GLogo.ico"
+                IconIndex="0"
+                Directory="ApplicationProgramsFolder"
+                WorkingDirectory="INSTALLDIR"/>
+            <RemoveFolder Id="ApplicationProgramsFolder" On="uninstall"/>
+            <RegistryValue Root="HKCU" Key="Software\Genesys\PureCloud_HomeDivisionRemoval" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+        </Component>
+    </DirectoryRef>  
+  </Fragment>
+
+  <Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLDIR">
+			<Component Id="ProductComponent" Guid="4AAAC21B-BDB1-4BD0-90AE-670C53DC2620">
+        <File Id="PureCloud_HomeDivisionRemoval.exe" Name="PureCloud_HomeDivisionRemoval.exe" Source="$(var.SourceDir)\PureCloud_HomeDivisionRemoval.exe" Vital="yes" KeyPath="no" DiskId="1"/>
+        <File Id="PureCloud_HomeDivisionRemoval.exe.config" Name="PureCloud_HomeDivisionRemoval.exe.config" Source="$(var.SourceDir)\PureCloud_HomeDivisionRemoval.exe.config" Vital="yes" KeyPath="no" DiskId="1"/>
+        <File Id="CsvHelper.dll" Name="CsvHelper.dll" Source="$(var.SourceDir)\CsvHelper.dll" Vital="yes" KeyPath="no" DiskId="1"/>
+        <File Id="log4net.dll" Name="log4net.dll" Source="$(var.SourceDir)\log4net.dll" Vital="yes" KeyPath="no" DiskId="1"/>
+        <File Id="log4net.xml" Name="log4net.xml" Source="$(var.SourceDir)\log4net.xml" Vital="yes" KeyPath="no" DiskId="1"/>
+        <File Id="Newtonsoft.Json.dll" Name="Newtonsoft.Json.dll" Source="$(var.SourceDir)\Newtonsoft.Json.dll" Vital="yes" KeyPath="no" DiskId="1"/>
+        <File Id="Newtonsoft.Json.xml" Name="Newtonsoft.Json.xml" Source="$(var.SourceDir)\Newtonsoft.Json.xml" Vital="yes" KeyPath="no" DiskId="1"/>
+        <File Id="PureCloud_HomeDivisionRemoval.pdb" Name="PureCloud_HomeDivisionRemoval.pdb" Source="$(var.SourceDir)\PureCloud_HomeDivisionRemoval.pdb" Vital="yes" KeyPath="no" DiskId="1"/>
+        <File Id="PureCloudPlatform.Client.V2.dll" Name="PureCloudPlatform.Client.V2.dll" Source="$(var.SourceDir)\PureCloudPlatform.Client.V2.dll" Vital="yes" KeyPath="no" DiskId="1"/>
+        <File Id="PureCloudPlatform.Client.V2.xml" Name="PureCloudPlatform.Client.V2.xml" Source="$(var.SourceDir)\PureCloudPlatform.Client.V2.xml" Vital="yes" KeyPath="no" DiskId="1"/>
+        <File Id="RestSharp.dll" Name="RestSharp.dll" Source="$(var.SourceDir)\RestSharp.dll" Vital="yes" KeyPath="no" DiskId="1"/>
+        <File Id="RestSharp.xml" Name="RestSharp.xml" Source="$(var.SourceDir)\RestSharp.xml" Vital="yes" KeyPath="no" DiskId="1"/>
+        <File Id="System.ValueTuple.dll" Name="System.ValueTuple.dll" Source="$(var.SourceDir)\System.ValueTuple.dll" Vital="yes" KeyPath="no" DiskId="1"/>
+        <File Id="System.ValueTuple.xml" Name="System.ValueTuple.xml" Source="$(var.SourceDir)\System.ValueTuple.xml" Vital="yes" KeyPath="no" DiskId="1"/>
+      </Component>
+		</ComponentGroup>
+  </Fragment>
+
+</Wix>
